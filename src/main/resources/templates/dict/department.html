@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>动物收容救助管理系统-部门信息管理</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet" />
+    <style>
+        .left {
+            float: left;
+            width: 200px;
+        }
+        .right {
+            float: left;
+            margin-left: 310px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="commons/header::header"></div>
+    <div th:replace="commons/side::side"></div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <!--树状菜单-->
+        <div style="padding: 15px;" id="test1" class="left">内容主体区域</div>
+        <div class="right">
+            <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">基本信息</li>
+                    <li>权限分配</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <form class="layui-form" method="post" action="/department/edit">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">部门ID</label>
+                                <div class="layui-input-block">
+                                    <input type="text" id="departmentId" name="departmentId" required  lay-verify="required" placeholder="请输入部门id" autocomplete="off" class="layui-input" th:value="${departmentId}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">负责人</label>
+                                <div class="layui-input-block">
+                                    <input type="text" id="people" name="people" required  lay-verify="required" placeholder="请输入部门负责人" autocomplete="off" class="layui-input" th:value="${Header}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">部门简介</label>
+                                <div class="layui-input-block">
+                                    <input type="text" id="introduction" name="introduction" required  lay-verify="required" placeholder="请输入部门简介" autocomplete="off" class="layui-input" th:value="${introduction}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">显示顺序</label>
+                                <div class="layui-input-block">
+                                    <input type="text" id="order" name="order" required  lay-verify="required" placeholder="请输入显示顺序" autocomplete="off" class="layui-input" th:value="${order}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">办公电话</label>
+                                <div class="layui-input-block">
+                                    <input type="text" id="phone" name="phone" required  lay-verify="required" placeholder="请输入办公电话" autocomplete="off" class="layui-input" th:value="${phone}">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">部门</label>
+                                <div class="layui-input-block">
+                                    <input type="text" id="deptname" name="deptname" required  lay-verify="required" placeholder="请输入部门" autocomplete="off" class="layui-input" th:value="${deptname}">
+                                </div>
+                            </div>
+                        </form>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="formDemo" id="sumbitDepart">立即提交</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item">
+                        <div style="padding: 15px;" id="test">内容主体区域</div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="formDemo" id="sumbitMenu">保存设置</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="commons/fotter::fotter"></div>
+    <script th:src="@{/layui/layui.js}"></script>
+    <script>
+        layui.use('tree', function(){
+            var tree = layui.tree;
+            //获取后端数据department
+            layui.$.post('/department/getDepartment',{},function(res){
+                //console.log(res.data);
+                if(res.code === 0){
+                    var data = res.data;
+                    //渲染树
+                    tree.render({
+                        elem: '#test1'
+                        ,data: data
+                        ,showCheckbox: false  //是否显示复选框
+                        ,id: 'demoId'
+                        ,onlyIconControl: true
+                        ,click: function(item){ //点击节点回调
+                            //console.log(item);
+                            layui.$.post('/department/list',{deptname:item.data.title},function(res){
+                                //将文本框设置值
+                                layui.$('#deptname').val(res.deptname);
+                                layui.$('#people').val(res.header);
+                                layui.$('#phone').val(res.phone);
+                                layui.$('#order').val(res.order);
+                                layui.$('#departmentId').val(res.departmentId);
+                                layui.$('#introduction').val(res.introduction);
+                            });
+                            layui.$.post('/menu/selectMenu',{departmentId:item.data.id},function (res){
+                                console.log(res);
+                                layui.tree.reload('demoId1')
+                                layui.tree.setChecked('demoId1',res);
+                            });
+                        }
+                    });
+                }
+            });
+
+            //渲染静态数据演示--现改成动态数据
+            /*
+            var inst1 = tree.render({
+                elem: '#test1'  //绑定元素
+                ,data: [{
+                    title: '动物园' //一级菜单
+                    ,children: [
+                        {
+                            title: '工会', //二级菜单
+                        },
+                        {
+                            title: '办公室'
+                        },
+                        {
+                            title: '财务室'
+                        },
+                        {
+                            title: '饲养科'
+                        },
+                        {
+                            title: '保卫科'
+                        },
+                        {
+                            title: '后勤科'
+                        },
+                        {
+                            title: '票务科'
+                        },
+                        {
+                            title: '科技科'
+                        },
+                        {
+                            title: '花卉科'
+                        },
+                        {
+                            title: '绿化科'
+                        },
+                        {
+                            title: '野生动物救护中心'
+                        }]
+                },]
+                ,click: function(item){ //点击节点回调
+                    //console.log(item);
+                    layui.$.post('/department/list',{deptname:item.data.title},function(res){
+                        //将文本框设置值
+                        layui.$('#deptname').val(res.deptname);
+                        layui.$('#people').val(res.header);
+                        layui.$('#phone').val(res.phone);
+                        layui.$('#order').val(res.order);
+                        layui.$('#departmentId').val(res.departmentId);
+                        layui.$('#introduction').val(res.introduction);
+                    });
+                }
+            });
+             */
+        });
+        layui.use('tree', function(){
+            var tree = layui.tree;
+            //获取后端数据department
+            layui.$.post('/menu/departmentMenu',{},function(res){
+                //console.log(res.data);
+                if(res.code === 0){
+                    var data = res.data;
+                    //渲染树
+                    tree.render({
+                        elem: '#test'
+                        ,data: data
+                        ,showCheckbox: true  //是否显示复选框
+                        ,id: 'demoId1'
+                        ,onlyIconControl: true
+                        ,click: function(item){ //点击节点回调
+                            //console.log(item);
+                        }
+                    });
+                }
+            });
+        });
+        //绑定提交按钮事件
+        layui.$('#sumbitDepart').on('click', function() {
+            //获取文本框的值
+            var deptname = layui.$('#deptname').val();
+            var people = layui.$('#people').val();
+            var phone = layui.$('#phone').val();
+            var order = layui.$('#order').val();
+            var departmentId = layui.$('#departmentId').val();
+            var introduction = layui.$('#introduction').val();
+            //提交数据
+            layui.$.post('/department/edit',{deptname:deptname,people:people,phone:phone,order:order,departmentId:departmentId,introduction:introduction},function(res){
+                if(res=== 'success'){
+                    layer.msg('修改成功', {
+                        offset: '15px'
+                        ,icon: 1
+                        ,time: 1000
+                    }, function(){
+                        //location.reload();
+                        layui.tree.reload('demoId');
+                    });
+                }else{
+                    layer.msg('修改失败', {
+                        offset: '15px'
+                        ,icon: 2
+                        ,time: 1000
+                    }, function(){
+                        //location.reload();
+                    });
+                }
+            });
+        });
+        layui.$('#sumbitMenu').on('click', function() {
+            //获取checkbox children选中的节点id
+            var checkStatus = layui.tree.getChecked('demoId1', 'children');
+            let ids = [];
+            //这里注意后端数据库不能选中一级节点,会导致length超出
+            for(let i=0;i<checkStatus.length;i++){
+                if(checkStatus[i].children){
+                    //存在子节点
+                    for(let j=0;j<checkStatus[i].children.length;j++){
+                        ids.push(checkStatus[i].children[j].id);
+                    }
+                }else{
+                    ids.push(checkStatus[i].id);
+                }
+            }
+            var departmentId = layui.$('#departmentId').val();
+            //提交数据
+            layui.$.post('/menu/editMenu',{departmentId:departmentId,ids:JSON.stringify(ids)},function(res){
+                if(res=== 'success'){
+                    layer.msg('修改成功', {
+                        offset: '15px'
+                        ,icon: 1
+                        ,time: 1000
+                    }, function(){
+                        //location.reload();
+                    });
+                }else{
+                    layer.msg('修改失败', {
+                        offset: '15px'
+                        ,icon: 2
+                        ,time: 1000
+                    }, function(){
+                        //location.reload();
+                    });
+                }
+            });
+        });
+    </script>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>动物收容救助管理系统-人员信息</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet" />
+</head>
+<body>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-block">
+            <input type="text" id="name" name="name" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input" th:value="${user.getName()}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-block">
+            <input type="text" id="username" name="username" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input" th:value="${user.getUsername()}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-block">
+            <input type="text" id="password" name="password" required  lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input" th:value="${user.getPassword()}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-block">
+            <input type="text" id="sex" name="sex" required  lay-verify="required" placeholder="请输入性别" autocomplete="off" class="layui-input" th:value="${user.getSex()}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">身份证号码</label>
+        <div class="layui-input-block">
+            <input type="text" id="Idnumber" name="Idnumber" required  lay-verify="required" placeholder="请输入身份证号码" autocomplete="off" class="layui-input" th:value="${user.getIdnumber()}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">生日</label>
+        <div class="layui-input-block">
+            <input type="date" id="birth" name="birth" required  lay-verify="required" placeholder="请输入生日" autocomplete="off" class="layui-input" th:value="${user.getBirth()}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">政治面貌</label>
+        <div class="layui-input-block">
+            <input type="text" id="politicalface" name="politicalface" required  lay-verify="required" placeholder="请输入政治面貌" autocomplete="off" class="layui-input" th:value="${user.getDepartname()}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">职务</label>
+        <div class="layui-input-block">
+            <input type="text" id="office" name="office" required  lay-verify="required" placeholder="请输入职务" autocomplete="off" class="layui-input" th:value="${user.getOffice()}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">职称</label>
+        <div class="layui-input-block">
+            <input type="text" id="jobtitle" name="jobtitle" required  lay-verify="required" placeholder="请输入职称" autocomplete="off" class="layui-input" th:value="${user.getJobtitle()}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">工作证号</label>
+        <div class="layui-input-block">
+            <input type="text" id="worknumber" name="worknumber" required  lay-verify="required" placeholder="请输入工作证号" autocomplete="off" class="layui-input" th:value="${user.getWorknumber()}">
+        </div>
+    </div>
+<!--    专业 profession-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">专业</label>
+        <div class="layui-input-block">
+            <input type="text" id="profession" name="profession" required  lay-verify="required" placeholder="请输入专业" autocomplete="off" class="layui-input" th:value="${user.getProfession()}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">学历</label>
+        <div class="layui-input-block">
+            <input type="text" id="degee" name="degee" required  lay-verify="required" placeholder="请输入学历" autocomplete="off" class="layui-input" th:value="${user.getDegee()}">
+        </div>
+    </div>
+<!--    部门 departname-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">部门</label>
+        <div class="layui-input-block">
+            <input type="text" id="departname" name="departname" required  lay-verify="required" placeholder="请输入部门" autocomplete="off" class="layui-input" th:value="${user.getDepartname()}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">工作时间</label>
+        <div class="layui-input-block">
+            <input type="date" id="worktime" name="worktime" required  lay-verify="required" placeholder="请输入工作时间" autocomplete="off" class="layui-input" th:value="${user.getWorktime()}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">职位</label>
+        <div class="layui-input-block">
+            <input type="text" id="post" name="post" required  lay-verify="required" placeholder="请输入职位" autocomplete="off" class="layui-input" th:value="${user.getPost()}">
+        </div>
+    </div>
+<!--    办公电话 officephone-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">办公电话</label>
+        <div class="layui-input-block">
+            <input type="text" id="officephone" name="officephone" required  lay-verify="required" placeholder="请输入办公电话" autocomplete="off" class="layui-input" th:value="${user.getOfficephone()}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">私人电话</label>
+        <div class="layui-input-block">
+            <input type="text" id="residentialphone" name="residentialphone" required  lay-verify="required" placeholder="请输入私人电话" autocomplete="off" class="layui-input" th:value="${user.getResidentialphone()}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">邮箱</label>
+        <div class="layui-input-block">
+            <input type="text" id="email" name="email" required  lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input" th:value="${user.getEmail()}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">在职否</label>
+        <div class="layui-input-block">
+            <input type="text" id="attribute" name="attribute" required  lay-verify="required" placeholder="请输入在职否" autocomplete="off" class="layui-input" th:value="${user.getAttribute()}">
+        </div>
+    </div>
+</form>
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+    var callbackdata = function () {
+        var data = {
+            name: layui.$("#name").val(),
+            username: layui.$("#username").val(),
+            password: layui.$("#password").val(),
+            sex: layui.$("#sex").val(),
+            Idnumber: layui.$("#Idnumber").val(),
+            birth: layui.$("#birth").val(),
+            politicalface: layui.$("#politicalface").val(),
+            office: layui.$("#office").val(),
+            jobtitle: layui.$("#jobtitle").val(),
+            worknumber: layui.$("#worknumber").val(),
+            profession: layui.$("#profession").val(),
+            departname: layui.$("#departname").val(),
+            worktime: layui.$("#worktime").val(),
+            post: layui.$("#post").val(),
+            officephone: layui.$("#officephone").val(),
+            residentialphone: layui.$("#residentialphone").val(),
+            email: layui.$("#email").val(),
+            attribute: layui.$("#attribute").val(),
+            degee: layui.$("#degee").val()
+        };
+        return data;
+    }
+</script>
+</body>
+</html>

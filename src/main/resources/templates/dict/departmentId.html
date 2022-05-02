@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>动物收容救助管理系统-数据关联</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet" />
+</head>
+<body>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">部门ID</label>
+        <div class="layui-input-block">
+            <input type="text" id="departmentId" name="departmentId" required  lay-verify="required" placeholder="请输入部门id" autocomplete="off" class="layui-input" th:value="${departmentId}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">负责人</label>
+        <div class="layui-input-block">
+            <input type="text" id="people" name="people" required  lay-verify="required" placeholder="请输入部门负责人" autocomplete="off" class="layui-input" th:value="${Header}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">部门简介</label>
+        <div class="layui-input-block">
+            <input type="text" id="introduction" name="introduction" required  lay-verify="required" placeholder="请输入部门简介" autocomplete="off" class="layui-input" th:value="${introduction}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">显示顺序</label>
+        <div class="layui-input-block">
+            <input type="text" id="order" name="order" required  lay-verify="required" placeholder="请输入显示顺序" autocomplete="off" class="layui-input" th:value="${order}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">办公电话</label>
+        <div class="layui-input-block">
+            <input type="text" id="phone" name="phone" required  lay-verify="required" placeholder="请输入办公电话" autocomplete="off" class="layui-input" th:value="${phone}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">部门</label>
+        <div class="layui-input-block">
+            <input type="text" id="deptname" name="deptname" required  lay-verify="required" placeholder="请输入部门" autocomplete="off" class="layui-input" th:value="${deptname}">
+        </div>
+    </div>
+</form>
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+    var callbackdata = function () {
+        var data = {
+            departmentId: layui.$("#departmentId").val(),
+            people: layui.$("#people").val(),
+            introduction:layui.$('#introduction').val(),
+            order:layui.$('#order').val(),
+            phone:layui.$('#phone').val(),
+            deptname:layui.$('#deptname').val()
+        };
+        return data;
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhy.animalsystem.system.mapper.MenuMapper">
+
+    <!--查询menu表中的全部数据-->
+    <select id="selectAll" resultType="com.lhy.animalsystem.system.entity.Menu">
+        select * from menu
+    </select>
+    <!--获取pid级目录-->
+    <select id="selectByPid" resultType="com.lhy.animalsystem.system.entity.Menu">
+        select * from menu where pid = #{pid} order by `order`
+    </select>
+    <!--查询父节点为i的全部菜单-->
+    <select id="selectByParentId" resultType="com.lhy.animalsystem.system.entity.Menu">
+        select * from menu where parentid = #{parentid} order by `order`
+    </select>
+    <!--查询某部门下的全部菜单-->
+    <select id="selectMenuByDepartment" resultType="int">
+        select menuid from department_menu where departmentid = #{departmentid}
+    </select>
+    <!--是否存在该菜单-->
+    <select id="select" resultType="int">
+        select ifnull(count(*),0) from department_menu where menuid = #{menuid} and departmentid = #{departmentid}
+    </select>
+    <!--存在该菜单但是最新的没有，则删除该菜单-->
+    <delete id="delete">
+        delete from department_menu where menuid = #{menuid} and departmentid = #{departmentid}
+    </delete>
+    <!--不存在该菜单，但是最新的有，则添加该菜单-->
+    <insert id="insert">
+        insert into department_menu(departmentid,menuid) values(#{departmentid},#{menuid})
+    </insert>
+</mapper>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>动物收容救助管理系统-人员信息管理</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet" />
+    <style>
+        .left {
+            float: left;
+            width: 200px;
+        }
+        .right {
+            margin-left: 310px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="commons/header::header"></div>
+    <div th:replace="commons/side::side"></div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;" id="test1" class="left">内容主体区域</div>
+        <div class="search">
+            <div class="layui-form">
+                <div class="layui-input-inline">
+                    <input type="text" name="keyword" id="name" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+                </div>
+                <button class="layui-btn layui-btn-sm" data-type="reload" id="search">
+                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                    搜索
+                </button>
+                <button class="layui-btn layui-btn-sm" lay-event="add" id="addIt"><i class="layui-icon layui-icon-add-circle-fine" style="font-size:20px;font-weight:bold"></i> 新增</button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="batchdel" data-type="getCheckData" id="delAll"><i class="layui-icon layui-icon-delete" style="font-size:20px;"></i> 批量删除</button>
+            </div>
+            <table id="demo" lay-filter="test" class="right"></table>
+        </div>
+        <!-- 操作按钮 -->
+        <script type="text/html" id="barDemo">
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
+    </div>
+    <div th:replace="commons/fotter::fotter"></div>
+    <script th:src="@{/layui/layui.js}"></script>
+    <script>
+        layui.use('tree', function(){
+            var tree = layui.tree;
+            //获取后端数据department
+            layui.$.post('/department/getDepartment',{},function(res){
+                console.log(res.data);
+                if(res.code === 0){
+                    var data = res.data;
+                    //渲染树
+                    tree.render({
+                        elem: '#test1'
+                        ,data: data
+                        ,showCheckbox: false  //是否显示复选框
+                        ,id: 'demoId'
+                        ,onlyIconControl: true
+                        ,click: function(item){ //点击节点回调
+                            console.log(item.data.title); //当前点击的节点数据
+                            layui.$.post('/people/departname',{departname:item.data.title},function(res){
+                                console.log(res);
+                                if(res.code === 0){
+                                    layui.table.reload('demo', {
+                                        where: {
+                                            departname: item.data.title
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        });
+        /*
+        layui.use('tree', function(){
+            var tree = layui.tree;
+
+            //渲染
+            var inst1 = tree.render({
+                elem: '#test1'  //绑定元素
+                ,onlyIconControl: false
+                ,data: [{
+                    title: '动物园' //一级菜单
+                    ,children: [
+                        {
+                            title: '工会', //二级菜单
+                        },
+                        {
+                            title: '办公室'
+                        },
+                        {
+                            title: '财务室'
+                        },
+                        {
+                            title: '饲养科'
+                        },
+                        {
+                            title: '保卫科'
+                        },
+                        {
+                            title: '后勤科'
+                        },
+                        {
+                            title: '票务科'
+                        },
+                        {
+                            title: '科技科'
+                        },
+                        {
+                            title: '花卉科'
+                        },
+                        {
+                            title: '绿化科'
+                        },
+                        {
+                            title: '野生动物救护中心'
+                        }]
+                },]
+                ,click: function(item){ //点击节点回调
+                    console.log(item.data.title); //当前点击的节点数据
+                    layui.$.post('/people/departname',{departname:item.data.title},function(res){
+                        console.log(res);
+                        if(res.code === 0){
+                            layui.table.reload('demo', {
+                                where: {
+                                    departname: item.data.title
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        });
+         */
+
+    </script>
+    <script th:inline=none>
+        layui.use('table', function(){
+            var table = layui.table;
+            table.render({
+                elem: '#demo'
+                ,height: 500
+                ,url: '/people/showall' //数据接口
+                ,page: true //开启分页
+                ,cols: [[
+                    {type: 'checkbox', fixed: 'left'}
+                    ,{field: 'name', title: '姓名',width:100, sort: true, fixed: 'left'}
+                    ,{field: 'username', title: '登录名', sort: true}
+                    ,{field: 'worknumber', title: '工作证号', sort: true}
+                    ,{field: 'sex', title: '性别', sort: true}
+                    ,{field: 'officephone', title: '办公电话', sort: true}
+                    ,{field: 'residentialphone', title: '手机', sort: true}
+                    ,{field: 'attribute', title: '在职否', sort: true}
+                    ,{fixed: 'right', align:'left', toolbar: '#barDemo'} 	//添加工具条
+                ]]
+            });
+        });
+        layui.use('table', function(){
+            var table = layui.table;
+            var form = layui.form;
+            //使用内置jquery
+            var $ = layui.jquery;
+            //监听行工具事件
+            table.on('tool(test)', function(obj){
+                var data = obj.data;
+                if(obj.event === 'detail'){
+
+                } else if(obj.event === 'del'){
+                    layer.confirm('确认要删除吗?', function(index){
+                        layui.$.post('/people/del',{username:data.username},function (res){
+                            if(res!==0){
+                                obj.del();
+                                layer.close(index);
+                            }else{
+                                layer.msg("删除失败");
+                            }
+                        });
+                    });
+                } else if(obj.event === 'edit'){
+                    var $ = layui.$;
+                    layer.open({
+                        type: 2
+                        ,title: '编辑'
+                        ,content: '/people/edit/'+data.username
+                        ,maxmin: true
+                        ,area: ['500px', '500px']
+                        ,btn: ['确定', '取消']
+                        ,yes: function(index, layero){
+                            var res  = layero.find('iframe')[0].contentWindow.callbackdata();
+                            console.log(res)
+                            //提交 Ajax 成功后，静态更新表格中的数据
+                            $.post('/people/editIt',{
+                                name:res.name,
+                                username:res.username,
+                                password:res.password,
+                                sex:res.sex,
+                                Idnumber:res.Idnumber,
+                                birth:res.birth,
+                                politicalface: res.politicalface,
+                                office: res.office,
+                                jobtitle: res.jobtitle,
+                                worknumber: res.worknumber,
+                                profession: res.profession,
+                                departname: res.departname,
+                                worktime: res.worktime,
+                                post: res.post,
+                                officephone: res.officephone,
+                                residentialphone: res.residentialphone,
+                                email: res.email,
+                                attribute: res.attribute,
+                                degee: res.degee
+                            },function (res1){
+                                table.reload('demo'); //数据刷新
+                                layer.close(index); //关闭弹层
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+        // 批量删除
+        function delAll() {
+            var table = layui.table;
+            var checkStatus = table.checkStatus('demo')
+            data = checkStatus.data;//获取选中的数据
+            //console.log(data)
+            //将data获取到departmentId加入到数组中
+            let usernames=[];
+            for(var i=0;i<data.length;i++){
+                usernames.push(data[i].username);
+            }
+            layer.confirm('真的删除该行吗?', function(index){
+                //向服务端发送删除指令
+                //用ajax来连通后端数据--或者用$.post(url,{},function(){})
+                layui.$.ajax({
+                    url:'/people/delAll',
+                    type:'post',
+                    data:{
+                        usernames:JSON.stringify(usernames)
+                    },
+                    success:function (data) {
+                        if (data==="success"){
+                            //停留一秒
+                            layer.msg(data,{icon:1,time:1000},function () {
+                                table.reload('demo');
+                            });
+                        }else {
+                            layer.msg(data,{icon:2,time:1000});
+                        }
+                    }
+                });
+            });
+        }
+        //layui文档竟然没有按钮的click属性,只能通过jquery来绑定了
+        layui.$('#delAll').on('click', function(){
+            delAll();
+        });
+        function search() {
+            var name = layui.$('#name').val();
+            var table = layui.table
+            // 下面可以实现搜索功能,但是不是全部数据的搜索,弃用
+            // table.reload('demo',{
+            //     where:{
+            //         name:name
+            //     }
+            // });
+            layui.$.post('/people/search',{name:name},function (res){
+                //console.log(res)
+                table.reload('demo', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        name:  name		//在表格中进行搜索
+                    }
+                });
+            })
+        }
+        layui.$('#search').on('click',function () {
+            search();
+        });
+        function addIt(){
+            layer.open({
+                type: 2
+                ,title: '增加'
+                ,content: '/people/edit'
+                ,maxmin: true
+                ,area: ['500px', '500px']
+                ,btn: ['确定', '取消']
+                ,yes: function(index, layero){
+                    var res  = layero.find('iframe')[0].contentWindow.callbackdata();
+                    //提交 Ajax 成功后，静态更新表格中的数据
+                    layui.$.post('/people/addIt',{departmentId:res.departmentId,header:res.people,introduction:res.introduction,order:res.order,phone:res.phone,deptname:res.deptname},function (res1){
+                        layui.table.reload('demo'); //数据刷新
+                        layer.close(index); //关闭弹层
+                    });
+                }
+            });
+        }
+        layui.$('#addIt').on('click',function () {
+            addIt();
+        });
+    </script>
+</div>
+</body>
+</html>

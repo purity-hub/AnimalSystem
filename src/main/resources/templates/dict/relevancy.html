@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>动物收容救助管理系统-数据关联</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="commons/header::header"></div>
+    <div th:replace="commons/side::side"></div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;" id="test1">内容主体区域</div>
+    </div>
+    <div th:replace="commons/fotter::fotter"></div>
+    <script th:src="@{/layui/layui.js}"></script>
+
+</div>
+</body>
+</html>

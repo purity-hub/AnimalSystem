@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhy.animalsystem.department.mapper.DepartmentMapper">
+
+    <!--查询选择部门-->
+    <select id="selectByDeptname" resultType="com.lhy.animalsystem.department.entity.Department">
+        select * from department where deptname = #{deptname}
+    </select>
+    <!--用于前端渲染树形结构数据-->
+    <select id="getDepartment" resultType="com.lhy.animalsystem.department.entity.Department">
+        select * from department order by `order`
+    </select>
+    <!--编辑部门信息-->
+    <update id="edit">
+        update department set Header=#{header},introduction=#{introduction},`order`=#{order},phone=#{phone},deptname=#{deptname} where departmentId=#{departmentId}
+    </update>
+
+</mapper>
