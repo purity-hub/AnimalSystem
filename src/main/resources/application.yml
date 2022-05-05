@@ -13,6 +13,9 @@ spring:
   # 关闭缓存
   thymeleaf:
     cache: false
+  # 开启aop
+  aop:
+    auto: true
 # mybatis配置 不建议将mapper.xml放在src目录下
 mybatis:
   mapper-locations: classpath:mapper/*.xml       # mapper映射文件

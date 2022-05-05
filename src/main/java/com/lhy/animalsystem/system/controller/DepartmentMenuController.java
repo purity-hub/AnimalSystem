@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/menu")
@@ -93,6 +90,67 @@ public class DepartmentMenuController {
             }
         }
         return false;
+    }
+
+    @RequestMapping("/MenuByDepartment")
+    private Map<String,Object> selectMenuByDepartment(@RequestParam("username") String username){
+        String department = menuService.selectDepartmentByUsername(username);//获取部门,设置权限
+        int departname = menuService.selectIdByDepartname(department);
+        List<Integer> list1 = menuService.selectMenuByDepartment(departname);
+        Set<Menu> menus1 = new TreeSet<Menu>(new Comparator<Menu>() {
+            @Override
+            public int compare(Menu o1, Menu o2) {
+                return o1.getParentid()-o2.getParentid()==0?o1.getOrder()-o2.getOrder(): (int) (o1.getParentid() - o2.getParentid());
+            }
+        });//存储子节点
+        Set<Menu> menus2 = new TreeSet<Menu>(new Comparator<Menu>() {
+            @Override
+            public int compare(Menu o1, Menu o2) {
+                return o1.getPid()-o2.getPid()==0?o1.getOrder()-o2.getOrder(): (int) (o1.getPid() - o2.getPid());
+            }
+        });//存储父节点
+        for(int id:list1){
+            //根据id查询菜单
+            Menu menu = menuService.selectMenu(id);
+            menus1.add(menu);
+        }
+        for (Menu menu:menus1){
+            if(menu.getParentid()!=0){
+                //存在父节点
+                Menu menu1 = menuService.selectMenu((int) menu.getParentid());
+                //删除重复的父节点
+                menus2.add(menu1);
+            }else{
+                //parentid为0的菜单--没有子节点的父节点
+                menus2.add(menu);
+            }
+        }
+        List<Map<String,Object>> list = new ArrayList<>();
+        for(Menu menu:menus2){
+            //对于每个父节点
+            HashMap<String,Object> map = new HashMap<>();
+            map.put("id",menu.getMenuid());
+            map.put("title",menu.getName());
+            map.put("url",menu.getUrl());
+            ArrayList<Object> list2 = new ArrayList<>();
+            for (Menu menu1:menus1){
+                //对于每个子节点,查询是否与父节点关联
+                if(menu1.getParentid()==menu.getMenuid()){
+                    HashMap<String,Object> map2 = new HashMap<>();
+                    map2.put("id",menu1.getMenuid());
+                    map2.put("title",menu1.getName());
+                    map2.put("url",menu1.getUrl());
+                    list2.add(map2);
+                }
+            }
+            map.put("children",list2);
+            list.add(map);
+        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("code",0);
+        map.put("msg","动态菜单");
+        map.put("data",list);
+        return map;
     }
 
 }

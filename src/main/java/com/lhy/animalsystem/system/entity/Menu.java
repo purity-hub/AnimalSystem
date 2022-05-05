@@ -14,6 +14,8 @@ public class Menu {
   private long pid;
   private long parentid;
 
+  private int order;
+
 
   public long getMenuid() {
     return menuid;
@@ -77,4 +79,11 @@ public class Menu {
     this.parentid = parentid;
   }
 
+  public int getOrder() {
+    return order;
+  }
+
+  public void setOrder(int order) {
+    this.order = order;
+  }
 }

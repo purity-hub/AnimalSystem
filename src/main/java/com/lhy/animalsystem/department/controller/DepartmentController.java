@@ -3,6 +3,7 @@ package com.lhy.animalsystem.department.controller;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.lhy.animalsystem.department.entity.Department;
 import com.lhy.animalsystem.department.service.DepartmentService;
+import com.lhy.animalsystem.system.annotation.MyLog;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,6 +57,7 @@ public class DepartmentController {
     }
 
     @RequestMapping("edit")
+    @MyLog(value = "修改部门")
     public String edit(@RequestParam("departmentId") int departmentId,
                     @RequestParam("deptname") String deptname,
                     @RequestParam("people") String people,

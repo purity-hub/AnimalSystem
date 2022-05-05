@@ -31,4 +31,21 @@
     <insert id="insert">
         insert into department_menu(departmentid,menuid) values(#{departmentid},#{menuid})
     </insert>
+
+    <!--查询用户名属于哪个部门-->
+    <select id="selectDepartmentByUsername" resultType="String">
+        select departname from users where username=#{username}
+    </select>
+    <!--根据departname获取相应的departmentId-->
+    <select id="selectIdByDepartname" resultType="int">
+        select departmentId from department where deptname=#{deptname}
+    </select>
+    <!--查询对应部门下有哪些可以访问的菜单-->
+    <select id="selectMenuid" resultType="int">
+        select menuid from department_menu where departmentId=#{departmentId} order by menuid
+    </select>
+    <!--根据menuid查询相应的菜单-->
+    <select id="selectMenu" resultType="com.lhy.animalsystem.system.entity.Menu">
+        select * from menu where menuid=#{menuid}
+    </select>
 </mapper>

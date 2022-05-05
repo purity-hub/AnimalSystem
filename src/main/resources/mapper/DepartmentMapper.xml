@@ -15,5 +15,4 @@
     <update id="edit">
         update department set Header=#{header},introduction=#{introduction},`order`=#{order},phone=#{phone},deptname=#{deptname} where departmentId=#{departmentId}
     </update>
-
 </mapper>

@@ -22,4 +22,13 @@ public interface MenuMapper {
     int insert(@Param("departmentid") int departmentid, @Param("menuid") int menuid);
 
     int delete(@Param("departmentid") int departmentid, @Param("menuid") int menuid);
+
+    String selectDepartmentByUsername(@Param("username") String username);
+
+    int selectIdByDepartname(@Param("deptname") String deptname);
+
+    List<Integer> selectMenuid(@Param("departmentId") int departmentId);
+
+    Menu selectMenu(@Param("menuid") int menuid);
+
 }

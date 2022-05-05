@@ -49,4 +49,24 @@ public class MenuServiceImpl implements MenuService {
     public int delete(int departmentid, int menuid) {
         return menuMapper.delete(departmentid, menuid);
     }
+
+    @Override
+    public String selectDepartmentByUsername(String username) {
+        return menuMapper.selectDepartmentByUsername(username);
+    }
+
+    @Override
+    public int selectIdByDepartname(String deptname) {
+        return menuMapper.selectIdByDepartname(deptname);
+    }
+
+    @Override
+    public List<Integer> selectMenuid(int departmentId) {
+        return menuMapper.selectMenuid(departmentId);
+    }
+
+    @Override
+    public Menu selectMenu(int menuid) {
+        return menuMapper.selectMenu(menuid);
+    }
 }

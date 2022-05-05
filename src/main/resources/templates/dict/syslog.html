@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>动物收容救助管理系统-数据关联</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="commons/header::header"></div>
+    <div th:replace="commons/side::side"></div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <table id="demo" lay-filter="test" class="right"></table>
+            <!-- 操作按钮 -->
+            <script type="text/html" id="barDemo">
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            </script>
+        </div>
+    </div>
+    <div th:replace="commons/fotter::fotter"></div>
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:inline=none>
+        layui.use('table', function(){
+            var table = layui.table;
+            table.render({
+                elem: '#demo'
+                ,height: 500
+                ,url: '/log/showall' //数据接口
+                ,page: true //开启分页
+                ,cols: [[
+                    {type: 'checkbox', fixed: 'left'}
+                    ,{field: 'username', title: '用户名',width:100, sort: true, fixed: 'left'}
+                    ,{field: 'operation', title: '操作', sort: true}
+                    ,{field: 'method', title: '方法', sort: true}
+                    ,{field: 'params', title: '参数', sort: true}
+                    ,{field: 'ip', title: 'ip地址', sort: true}
+                    ,{field: 'createdDate', title: '创建时间', sort: true}
+                    ,{fixed: 'right', align:'left', toolbar: '#barDemo'} 	//添加工具条
+                ]]
+            });
+        });
+        layui.use('table', function(){
+            var table = layui.table;
+            var form = layui.form;
+            //使用内置jquery
+            var $ = layui.jquery;
+            //监听行工具事件
+            table.on('tool(test)', function(obj){
+                var data = obj.data;
+                if(obj.event === 'detail'){
+
+                } else if(obj.event === 'del'){
+                    layer.confirm('确认要删除吗?', function(index){
+                        layui.$.post('/log/del',{id:data.id},function (res){
+                            if(res!==0){
+                                obj.del();
+                                layer.close(index);
+                            }else{
+                                layer.msg("删除失败");
+                            }
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhy.animalsystem.system.mapper.SysLogMapper">
+
+    <insert id="save">
+        insert into sys_logs(username, operation, method, params, ip) VALUES (#{username}, #{operation}, #{method}, #{params}, #{ip})
+    </insert>
+
+    <!--查询全部的log日志信息-->
+    <select id="findAll" resultType="com.lhy.animalsystem.system.entity.SysLog">
+        select * from sys_logs
+    </select>
+    <!--删除日志-->
+    <delete id="deleteLogById">
+        delete from sys_logs where id = #{id}
+    </delete>
+</mapper>

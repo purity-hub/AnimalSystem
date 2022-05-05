@@ -19,7 +19,7 @@ public class LoginController {
     @RequestMapping("/")
     public String Welcome(){
         //配置欢迎页为login
-        return "index";
+        return "login";
     }
 
     @RequestMapping("/login")

@@ -20,4 +20,12 @@ public interface MenuService {
 
     int delete(int departmentid, int menuid);
 
+    String selectDepartmentByUsername(String username);
+
+    int selectIdByDepartname(String deptname);
+
+    List<Integer> selectMenuid(int departmentId);
+
+    Menu selectMenu(int menuid);
+
 }

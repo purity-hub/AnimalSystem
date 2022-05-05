@@ -3,6 +3,7 @@ package com.lhy.animalsystem.people.controller;
 import com.lhy.animalsystem.department.entity.Department;
 import com.lhy.animalsystem.login.entity.User;
 import com.lhy.animalsystem.people.service.PeopleService;
+import com.lhy.animalsystem.system.annotation.MyLog;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,6 +58,7 @@ public class PeopleController {
     }
 
     @RequestMapping("/editIt")
+    @MyLog("修改人员信息")
     public int edit(@RequestParam("name") String name,
                     @RequestParam("username") String username,
                     @RequestParam("password") String password,
@@ -84,11 +86,13 @@ public class PeopleController {
     }
 
     @RequestMapping("/del")
+    @MyLog("删除人员信息")
     public int del(@RequestParam("username") String username){
         return peopleService.deleteByUsername(username);
     }
 
     @RequestMapping("/delAll")
+    @MyLog("批量删除人员信息")
     public String delAll(@RequestParam("usernames") String usernames){
         //批量删除
         usernames=usernames.substring(1,usernames.length()-1);
@@ -100,6 +104,7 @@ public class PeopleController {
         return "success";
     }
     @RequestMapping("/addIt")
+    @MyLog("添加人员信息")
     public int addIt(@RequestParam("name") String name,
                      @RequestParam("username") String username,
                      @RequestParam("password") String password,

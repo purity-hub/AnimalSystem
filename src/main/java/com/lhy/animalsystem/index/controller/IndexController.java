@@ -20,4 +20,14 @@ public class IndexController {
     public String People(){
         return "dict/peopleinfo";
     }
+
+    @RequestMapping("/dict/authorization")
+    public String Authorization(){
+        return "dict/authorization";
+    }
+
+    @RequestMapping("/dict/syslog")
+    public String Syslog(){
+        return "dict/syslog";
+    }
 }
