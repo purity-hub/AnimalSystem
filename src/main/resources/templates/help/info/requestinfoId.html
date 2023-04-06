@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>动物收容救助管理系统-人员信息</title>
+  <link th:href="@{/layui/css/layui.css}" rel="stylesheet"/>
+</head>
+<body>
+<form class="layui-form" action="">
+<!--  <div class="layui-form-item">-->
+<!--    <label class="layui-form-label">求助人姓名</label>-->
+<!--    <div class="layui-input-block">-->
+<!--      <input type="text" id="name" name="name" lay-verify="required" placeholder="请输入求助人姓名"-->
+<!--             autocomplete="off" class="layui-input" th:value="${helprequest.getName()}" disabled>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="layui-form-item">-->
+<!--    <label class="layui-form-label">求助人电话</label>-->
+<!--    <div class="layui-input-block">-->
+<!--      <input type="text" id="phone" name="phone" lay-verify="required" placeholder="请输入求助人电话"-->
+<!--             autocomplete="off" class="layui-input" th:value="${helprequest.getPhone()}" disabled>-->
+<!--    </div>-->
+<!--  </div>-->
+  <!--    animal-->
+  <div class="layui-form-item">
+    <label class="layui-form-label">求助动物</label>
+    <div class="layui-input-block">
+      <input type="text" id="animal" name="animal" lay-verify="required" placeholder="请输入求助动物"
+             autocomplete="off" class="layui-input" th:value="${helprequest.getAnimal()}" disabled>
+    </div>
+  </div>
+<!--  &lt;!&ndash;    location&ndash;&gt;-->
+<!--  <div class="layui-form-item">-->
+<!--    <label class="layui-form-label">求助地址</label>-->
+<!--    <div class="layui-input-block">-->
+<!--      <input type="text" id="location" name="location" lay-verify="required" placeholder="请输入求助地址"-->
+<!--             autocomplete="off" class="layui-input" th:value="${helprequest.getLocation()}" disabled>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  &lt;!&ndash;    time 求助时间&ndash;&gt;-->
+<!--  <div class="layui-form-item">-->
+<!--    <label class="layui-form-label">求助时间</label>-->
+<!--    <div class="layui-input-block">-->
+<!--      <input type="datetime-local" id="time" name="time" lay-verify="required"-->
+<!--             placeholder="请输入求助时间" autocomplete="off" class="layui-input"-->
+<!--             th:value="${helprequest.getTime()}" disabled>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  &lt;!&ndash;    source 求助来源&ndash;&gt;-->
+<!--  <div class="layui-form-item">-->
+<!--    <label class="layui-form-label">求助来源</label>-->
+<!--    <div class="layui-input-block">-->
+<!--      <input type="text" id="source" name="source" lay-verify="required" placeholder="请输入求助来源"-->
+<!--             autocomplete="off" class="layui-input" th:value="${helprequest.getSource()}" disabled>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  &lt;!&ndash;    description 求助详情&ndash;&gt;-->
+<!--  <div class="layui-form-item">-->
+<!--    <label class="layui-form-label">求助详情</label>-->
+<!--    <div class="layui-input-block">-->
+<!--      <input type="text" id="description" name="description" lay-verify="required"-->
+<!--             placeholder="请输入求助详情" autocomplete="off" class="layui-input"-->
+<!--             th:value="${helprequest.getDescription()}" disabled>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--    animalid 救助动物id-->
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">救助动物id</label>-->
+<!--        <div class="layui-input-block">-->
+<!--        <input type="text" id="animalid" name="animalid" lay-verify="required"-->
+<!--                 placeholder="请输入救助动物id" autocomplete="off" class="layui-input">-->
+<!--        </div>-->
+<!--    </div>-->
+    <!--   veterinarianid 兽医id -->
+    <div class="layui-form-item">
+        <label class="layui-form-label">兽医</label>
+        <div class="layui-input-block">
+        <select type="text" id="veterinarianid" name="veterinarianid" lay-verify="required"
+                 placeholder="请选择兽医" autocomplete="off" class="layui-input">
+          <option th:each="veterinarian:${veterinarians}" th:value="${veterinarian.getId()}"
+                  th:text="${veterinarian.getName()}" th:selected="${helprequest.getVeterinarianid()==veterinarian.getId()}"></option>
+        </select>
+        </div>
+    </div>
+    <!--    type 救助类型-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">救助类型</label>
+        <div class="layui-input-block">
+        <input type="text" id="type" name="type" lay-verify="required"
+                 placeholder="请输入救助类型" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+<!--&lt;!&ndash;  assigntime 指派时间&ndash;&gt;-->
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">指派时间</label>-->
+<!--        <div class="layui-input-block">-->
+<!--        <input type="datetime-local" id="assigntime" name="assigntime" lay-verify="required"-->
+<!--                 placeholder="请输入指派时间" autocomplete="off" class="layui-input" disabled>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--&lt;!&ndash;    assignpeopleid 指派人id&ndash;&gt;-->
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">指派人id</label>-->
+<!--        <div class="layui-input-block">-->
+<!--        <input type="text" id="assignpeopleid" name="assignpeopleid" lay-verify="required"-->
+<!--                 placeholder="请输入指派人id" autocomplete="off" class="layui-input" disabled>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--&lt;!&ndash;    starttime 开始救助时间&ndash;&gt;-->
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">开始救助时间</label>-->
+<!--        <div class="layui-input-block">-->
+<!--        <input type="datetime-local" id="starttime" name="starttime" lay-verify="required"-->
+<!--                 placeholder="请输入开始救助时间" autocomplete="off" class="layui-input">-->
+<!--        </div>-->
+<!--    </div>-->
+<!--&lt;!&ndash;    state 流转状态&ndash;&gt;-->
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">流转状态</label>-->
+<!--        <div class="layui-input-block">-->
+<!--        <input type="text" id="state" name="state" lay-verify="required"-->
+<!--                 placeholder="请输入流转状态" autocomplete="off" class="layui-input">-->
+<!--        </div>-->
+<!--    </div>-->
+  </div>
+</form>
+<script th:src="@{/layui/layui.js}"></script>
+<!--<script>-->
+<!--  layui.use(['form', 'layedit', 'laydate'], function () {-->
+<!--    var $ = layui.jquery;-->
+<!--    $.ajax({-->
+<!--      url: '/veterinarian/showall',//json文件位置-->
+<!--      type: 'get', //请求方式为get-->
+<!--      dataType: 'json', //返回数据格式为json-->
+<!--      success: function (result) { //请求成功完成后要执行的方法-->
+<!--        var select = $("#veterinarianid");//TypeID为HTML标签ID-->
+<!--        $.each(result, function (index, item) {-->
+<!--          select.append(new Option( item.name, item.id));// 下拉菜单里添加元素-->
+<!--        });-->
+<!--        layui.form.render("select");-->
+<!--      }-->
+<!--    });-->
+<!--  });-->
+<!--</script>-->
+<script>
+  var callbackdata = function () {
+    var data = {
+      name: layui.$("#name").val(),
+      phone: layui.$("#phone").val(),
+      animal: layui.$("#animal").val(),
+      location: layui.$("#location").val(),
+      time: layui.$("#time").val(),
+      source: layui.$("#source").val(),
+      description: layui.$("#description").val(),
+      record_name: layui.$("#recordname").val(),
+      record_time: layui.$("#recordtime").val(),
+      veterinarianid: layui.$("#veterinarianid").val(),
+        type: layui.$("#type").val(),
+    };
+    return data;
+  }
+</script>
+</body>
+</html>

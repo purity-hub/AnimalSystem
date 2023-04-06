@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhy.animalsystem.authorization.mapper.AuthorizationMapper">
+    <insert id="insert">
+        insert into authorization_department(aid,did) values(#{id},#{subid})
+    </insert>
+    <insert id="insertRole">
+        insert into authorization_roles(aid,rid) values(#{id},#{subid})
+    </insert>
+    <delete id="delete">
+        delete from authorization_department where aid = #{id} and did = #{subid}
+    </delete>
+    <delete id="deleteRole">
+        delete from authorization_roles where aid = #{id} and rid = #{subid}
+    </delete>
+
+    <select id="selectByPid" resultType="com.lhy.animalsystem.authorization.entity.Authorization">
+        select * from authorization where parentid = #{pid}
+    </select>
+    <select id="selectRoles" resultType="com.lhy.animalsystem.authorization.entity.Roles">
+        select * from roles where state = #{b}
+    </select>
+    <select id="selectMenuByDepartment" resultType="java.lang.Integer">
+        select aid from authorization_department,department where authorization_department.did = department.departmentId and department.departmentId = #{departmentId}
+    </select>
+    <select id="selectMenuByRole" resultType="java.lang.Integer">
+        select aid from authorization_roles,roles where authorization_roles.rid = roles.roleId and roles.roleId = #{roleId}
+    </select>
+    <select id="select" resultType="java.lang.Integer">
+        select count(*) from authorization_department where aid = #{id} and did = #{subid}
+    </select>
+    <select id="selectRole" resultType="java.lang.Integer">
+        select count(*) from authorization_roles where aid = #{id} and rid = #{subid}
+    </select>
+</mapper>

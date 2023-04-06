@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <title>动物收容救助管理系统-授权管理</title>
     <link th:href="@{/layui/css/layui.css}" rel="stylesheet" />
+    <style>
+        .left {
+            float: left;
+            width: 200px;
+        }
+        .right {
+            float: left;
+            margin-left: 310px;
+        }
+    </style>
 </head>
 <body>
 <div class="layui-layout layui-layout-admin">
@@ -11,10 +21,110 @@
     <div th:replace="commons/side::side"></div>
     <div class="layui-body">
         <!-- 内容主体区域 -->
-        <div style="padding: 15px;">内容主体区域</div>
+        <div style="padding: 15px;" id="test1" class="left">内容主体区域</div>
+        <div class="right">
+            <div style="padding: 15px;" id="test">内容主体区域</div>
+            <div class="layui-form-item">
+                <input type="text" id="departmentId" name="departmentId" required  hidden="hidden">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo" id="sumbitMenu">保存设置</button>
+                </div>
+            </div>
+        </div>
     </div>
     <div th:replace="commons/fotter::fotter"></div>
     <script th:src="@{/layui/layui.js}"></script>
+    <script>
+        layui.use('tree', function(){
+            var tree = layui.tree;
+            //获取后端数据department
+            layui.$.post('/authorization/getDepartment',{},function(res){
+                if(res.code === 0){
+                    var data = res.data;
+                    //渲染树
+                    tree.render({
+                        elem: '#test1'
+                        ,data: data
+                        ,showCheckbox: false  //是否显示复选框
+                        ,id: 'demoId'
+                        ,onlyIconControl: true
+                        ,click: function(item){ //点击节点回调
+                            layui.$('#departmentId').val(item.data.id);
+                            layui.$.post('/authorization/selectMenu',{
+                                departmentId:item.data.id
+                            },function (res){
+                                console.log(res);
+                                layui.tree.reload('demoId1')
+                                layui.tree.setChecked('demoId1',res);
+                            });
+                        }
+                    });
+                }
+            });
+        });
+        layui.use('tree', function(){
+            var tree = layui.tree;
+            //获取后端数据
+            layui.$.post('/authorization/showtree',{},function(res){
+                console.log(res.data);
+                if(res.code === 0){
+                    var data = res.data;
+                    //渲染树
+                    tree.render({
+                        elem: '#test'
+                        ,data: data
+                        ,accordion: true
+                        ,showCheckbox: true  //是否显示复选框
+                        ,id: 'demoId1'
+                        ,onlyIconControl: true
+                        ,click: function(item){ //点击节点回调
+                            //console.log(item);
+                        }
+                    });
+                }
+            });
+        });
+        layui.$('#sumbitMenu').on('click', function() {
+            //获取checkbox children选中的节点id
+            var checkStatus = layui.tree.getChecked('demoId1', 'children');
+            let ids = [];
+            //这里注意后端数据库不能选中一级节点,会导致length超出
+            for(let i=0;i<checkStatus.length;i++){
+                if(checkStatus[i].children){
+                    //存在子节点
+                    for(let j=0;j<checkStatus[i].children.length;j++){
+                        ids.push(checkStatus[i].children[j].id);
+                    }
+                }else{
+                    ids.push(checkStatus[i].id);
+                }
+            }
+            var departmentId = layui.$('#departmentId').val();
+            //提交数据
+            layui.$.post('/authorization/editMenu',{
+                departmentId:departmentId,
+                ids:JSON.stringify(ids)
+            },function(res){
+                if(res=== 'success'){
+                    layer.msg('修改成功', {
+                        offset: '15px'
+                        ,icon: 1
+                        ,time: 1000
+                    }, function(){
+                        //location.reload();
+                    });
+                }else{
+                    layer.msg('修改失败', {
+                        offset: '15px'
+                        ,icon: 2
+                        ,time: 1000
+                    }, function(){
+                        //location.reload();
+                    });
+                }
+            });
+        });
+    </script>
 </div>
 </body>
 </html>

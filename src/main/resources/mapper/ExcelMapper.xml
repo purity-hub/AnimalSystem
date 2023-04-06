@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhy.animalsystem.excel.mapper.ExcelMapper">
+    <select id="selectAll" resultType="com.lhy.animalsystem.excel.entity.HelpAnimal">
+        select animal.name name,animal.type type,helprequest.type helptype,users.name veterinarian,assigntime time,animal.state forword from helprequest,animal,users where helprequest.animalid = animal.id and helprequest.veterinarianid = users.id
+    </select>
+    <select id="selectAllByPage" resultType="com.lhy.animalsystem.excel.entity.HelpAnimal">
+        select animal.name name,animal.type type,helprequest.type helptype,users.name veterinarian,assigntime time,animal.state forword from helprequest,animal,users where helprequest.animalid = animal.id and helprequest.veterinarianid = users.id
+        limit #{page},#{limit}
+    </select>
+    <select id="selectVeterinarian" resultType="com.lhy.animalsystem.excel.entity.VeterinarianHelp">
+        select users.id id,users.name name,users.degee degee,users.profession profession from users where departname = '保卫科';
+    </select>
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(*) from helprequest where veterinarianid = #{id}
+    </select>
+    <select id="selectCount1" resultType="java.lang.Integer">
+        select count(*) from helprequest where veterinarianid = #{id} and state = 1
+    </select>
+    <select id="selectCount2" resultType="java.lang.Integer">
+        select count(*) from helprequest where veterinarianid = #{id} and state = 2
+    </select>
+    <select id="selectVeterinarianByPage" resultType="com.lhy.animalsystem.excel.entity.VeterinarianHelp">
+        select users.id,users.name name,users.degee degee,users.profession profession from users where departname = '保卫科' limit #{page},#{limit}
+    </select>
+    <select id="selectHelpTask" resultType="com.lhy.animalsystem.excel.entity.HelpTask">
+        select recordtime date,animal,type,state from helprequest
+    </select>
+    <select id="selectHelpTaskByPage" resultType="com.lhy.animalsystem.excel.entity.HelpTask">
+        select recordtime date,animal,type,state from helprequest limit #{page},#{limit}
+    </select>
+</mapper>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>动物收容救助管理系统-人员信息</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet"/>
+</head>
+<body>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">求助人姓名</label>
+        <div class="layui-input-block">
+            <input type="text" id="name" name="name" lay-verify="required" placeholder="请输入求助人姓名"
+                   autocomplete="off" class="layui-input" th:value="${helprequest.getName()}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">求助人电话</label>
+        <div class="layui-input-block">
+            <input type="text" id="phone" name="phone" lay-verify="required" placeholder="请输入求助人电话"
+                   autocomplete="off" class="layui-input" th:value="${helprequest.getPhone()}">
+        </div>
+    </div>
+    <!--    animal-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">求助人电话</label>
+        <div class="layui-input-block">
+            <input type="text" id="animal" name="animal" lay-verify="required" placeholder="请输入求助人动物"
+                   autocomplete="off" class="layui-input" th:value="${helprequest.getAnimal()}">
+        </div>
+    </div>
+    <!--    location-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">求助地址</label>
+        <div class="layui-input-block">
+            <input type="text" id="location" name="location" lay-verify="required" placeholder="请输入求助地址"
+                   autocomplete="off" class="layui-input" th:value="${helprequest.getLocation()}">
+        </div>
+    </div>
+    <!--    time 求助时间-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">求助时间</label>
+        <div class="layui-input-block">
+            <input type="datetime-local" id="time" name="time" lay-verify="required"
+                   placeholder="请输入求助时间" autocomplete="off" class="layui-input"
+                   th:value="${helprequest.getTime()}">
+        </div>
+    </div>
+    <!--    source 求助来源-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">求助来源</label>
+        <div class="layui-input-block">
+            <input type="text" id="source" name="source" lay-verify="required" placeholder="请输入求助来源"
+                   autocomplete="off" class="layui-input" th:value="${helprequest.getSource()}">
+        </div>
+    </div>
+    <!--    description 求助详情-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">求助详情</label>
+        <div class="layui-input-block">
+            <input type="text" id="description" name="description" lay-verify="required"
+                   placeholder="请输入求助详情" autocomplete="off" class="layui-input"
+                   th:value="${helprequest.getDescription()}">
+        </div>
+    </div>
+    <!--    record_name 记录人姓名-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">记录人姓名</label>
+        <div class="layui-input-block">
+            <input type="text" id="recordname" name="recordname" lay-verify="required"
+                   placeholder="请输入记录人姓名" autocomplete="off" class="layui-input"
+                   th:value="${helprequest.getRecordname()}" disabled>
+        </div>
+    </div>
+    <!--    record_time 记录时间-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">记录时间</label>
+        <div class="layui-input-block">
+            <input type="datetime-local" id="recordtime" name="recordtime" lay-verify="required"
+                   placeholder="请输入记录时间" autocomplete="off" class="layui-input"
+                   th:value="${helprequest.getRecordtime()}" disabled>
+        </div>
+    </div>
+</form>
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+    var callbackdata = function () {
+        var data = {
+            name: layui.$("#name").val(),
+            phone: layui.$("#phone").val(),
+            animal: layui.$("#animal").val(),
+            location: layui.$("#location").val(),
+            time: layui.$("#time").val(),
+            source: layui.$("#source").val(),
+            description: layui.$("#description").val(),
+            record_name: layui.$("#recordname").val(),
+            record_time: layui.$("#recordtime").val(),
+        };
+        return data;
+    }
+</script>
+</body>
+</html>

@@ -16,6 +16,19 @@ public class Menu {
 
   private int order;
 
+  public Menu() {
+  }
+
+  public Menu(long menuid, String name, String url, String ismenu, String remark, long pid, long parentid, int order) {
+    this.menuid = menuid;
+    this.name = name;
+    this.url = url;
+    this.ismenu = ismenu;
+    this.remark = remark;
+    this.pid = pid;
+    this.parentid = parentid;
+    this.order = order;
+  }
 
   public long getMenuid() {
     return menuid;

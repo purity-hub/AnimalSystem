@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>动物收容救助管理系统-字典值</title>
+  <link th:href="@{/layui/css/layui.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <!-- 内容主体区域 -->
+    <div class="layui-form">
+        <button class="layui-btn layui-btn-sm" lay-event="add" id="addIt"><i class="layui-icon layui-icon-add-circle-fine" style="font-size:20px;font-weight:bold"></i> 新增</button>
+        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="batchdel" data-type="getCheckData" id="delAll"><i class="layui-icon layui-icon-delete" style="font-size:20px;"></i> 批量删除</button>
+    </div>
+    <input type="text" id="parentid" th:value="${id}" hidden="hidden">
+    <div style="padding: 15px;">
+      <table id="demo" lay-filter="test" class="right"></table>
+      <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+      </script>
+    </div>
+  <script th:src="@{/layui/layui.js}"></script>
+  <script th:inline="javascript">
+    // thymeleaf 获取model的方法
+    const id = [[${id}]];
+    layui.use('table', function(){
+      var table = layui.table;
+      table.render({
+        elem: '#demo'
+        ,height: 500
+        ,url: '/dictionaryvalue/showall/'+id //数据接口
+        ,page: true //开启分页
+        ,cols: [[
+          {type: 'checkbox', fixed: 'left'}
+          ,{field: 'name', title: '名称',width:100, sort: true, fixed: 'left'}
+          ,{field: 'value', title: '值', sort: true}
+          ,{field: 'code', title: '代码', sort: true}
+          ,{field: 'info', title: '信息', sort: true}
+          ,{fixed: 'right', align:'left', toolbar: '#barDemo'} 	//添加工具条
+        ]]
+      });
+    });
+    layui.use('table', function(){
+      var table = layui.table;
+      var form = layui.form;
+      //使用内置jquery
+//监听行工具事件
+        table.on('tool(test)', function(obj){
+        var data = obj.data;
+        if(obj.event === 'authorization'){
+          //授权
+          layer.open({
+            //tyoe为2时开启外部url内容
+            type: 2,
+            // r表示right,b表示bottom
+            offset: 'rb',
+            title: '授权',
+            // anim 特效 0-平滑放大 1-从上掉落 2-从底部往上滑入 3-从左滑入 4-从左翻转 5-渐显 6-抖动
+            anim: 1,
+            // 第一个参数宽度，第二个参数高度
+            area: ['558px', '100%'],
+            // 内容区 在body中写入<div id="draw">。。。。</div>代码，即弹窗内容
+            content: '/people/authorization',
+          })
+        } else if(obj.event === 'del'){
+          layer.confirm('确认要删除吗?', function(index){
+            layui.$.post('/dictionaryvalue/del',{id:data.id},function (res){
+              if(res!==0){
+                obj.del();
+                layer.close(index);
+              }else{
+                layer.msg("删除失败");
+              }
+            });
+          });
+        } else if(obj.event === 'edit'){
+          var $ = layui.$;
+          layer.open({
+            type: 2
+            ,title: '编辑'
+            ,content: '/dictionaryvalue/edit/'+data.id
+            ,maxmin: true
+            ,area: ['500px', '500px']
+            ,btn: ['确定', '取消']
+            ,yes: function(index, layero){
+              var res  = layero.find('iframe')[0].contentWindow.callbackdata();
+              console.log(res)
+              //提交 Ajax 成功后，静态更新表格中的数据
+              $.post('/dictionaryvalue/editIt',{
+                  id:data.id,
+                name:res.name,
+                value:res.value,
+                code:res.code,
+                info:res.info,
+              },function (res1){
+                table.reload('demo'); //数据刷新
+                layer.close(index); //关闭弹层
+              });
+            }
+          });
+        }
+      });
+    });
+  </script>
+    <script>
+        // 批量删除
+        function delAll() {
+            var table = layui.table;
+            var checkStatus = table.checkStatus('demo')
+            data = checkStatus.data;//获取选中的数据
+            //console.log(data)
+            //将data获取到departmentId加入到数组中
+            let ids=[];
+            for(var i=0;i<data.length;i++){
+                ids.push(data[i].id);
+            }
+            layer.confirm('真的删除该行吗?', function(index){
+                //向服务端发送删除指令
+                //用ajax来连通后端数据--或者用$.post(url,{},function(){})
+                layui.$.ajax({
+                    url:'/dictionaryvalue/delAll',
+                    type:'post',
+                    data:{
+                        ids:JSON.stringify(ids)
+                    },
+                    success:function (data) {
+                        if (data==="success"){
+                            //停留一秒
+                            layer.msg(data,{icon:1,time:1000},function () {
+                                table.reload('demo');
+                            });
+                        }else {
+                            layer.msg(data,{icon:2,time:1000});
+                        }
+                    }
+                });
+            });
+        }
+        //layui文档竟然没有按钮的click属性,只能通过jquery来绑定了
+        layui.$('#delAll').on('click', function(){
+            delAll();
+        });
+        function addIt(){
+            layer.open({
+                type: 2
+                ,title: '增加'
+                ,content: '/dictionaryvalue/edit'
+                ,maxmin: true
+                ,area: ['500px', '500px']
+                ,btn: ['确定', '取消']
+                ,yes: function(index, layero){
+                    var res  = layero.find('iframe')[0].contentWindow.callbackdata();
+                    var parentid = document.getElementById("parentid").value;
+                    //提交 Ajax 成功后，静态更新表格中的数据
+                    layui.$.post('/dictionaryvalue/addIt',{
+                        parentid :parentid,
+                        name:res.name,
+                        value:res.value,
+                        code:res.code,
+                        info:res.info,
+                    },function (res1){
+                        layui.table.reload('demo'); //数据刷新
+                        layer.close(index); //关闭弹层
+                    });
+                }
+            });
+        }
+        layui.$('#addIt').on('click',function () {
+            addIt();
+        });
+    </script>
+</div>
+</body>
+</html>

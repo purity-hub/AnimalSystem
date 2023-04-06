@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>动物收容救助管理系统-人员信息</title>
+  <link th:href="@{/layui/css/layui.css}" rel="stylesheet"/>
+</head>
+<body>
+<form class="layui-form" action="">
+  <div class="layui-form-item">
+    <label class="layui-form-label">求助人姓名</label>
+    <div class="layui-input-block">
+      <input type="text" id="name" name="name" lay-verify="required" placeholder="请输入求助人姓名"
+             autocomplete="off" class="layui-input" th:value="${helprequest.getName()}" disabled>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">求助人电话</label>
+    <div class="layui-input-block">
+      <input type="text" id="phone" name="phone" lay-verify="required" placeholder="请输入求助人电话"
+             autocomplete="off" class="layui-input" th:value="${helprequest.getPhone()}" disabled>
+    </div>
+  </div>
+  <!--    animal-->
+  <div class="layui-form-item">
+    <label class="layui-form-label">求助人电话</label>
+    <div class="layui-input-block">
+      <input type="text" id="animal" name="animal" lay-verify="required" placeholder="请输入求助人动物"
+             autocomplete="off" class="layui-input" th:value="${helprequest.getAnimal()}" disabled>
+    </div>
+  </div>
+  <!--    location-->
+  <div class="layui-form-item">
+    <label class="layui-form-label">求助地址</label>
+    <div class="layui-input-block">
+      <input type="text" id="location" name="location" lay-verify="required" placeholder="请输入求助地址"
+             autocomplete="off" class="layui-input" th:value="${helprequest.getLocation()}" disabled>
+    </div>
+  </div>
+  <!--    time 求助时间-->
+  <div class="layui-form-item">
+    <label class="layui-form-label">求助时间</label>
+    <div class="layui-input-block">
+      <input type="datetime-local" id="time" name="time" lay-verify="required"
+             placeholder="请输入求助时间" autocomplete="off" class="layui-input"
+             th:value="${helprequest.getTime()}" disabled>
+    </div>
+  </div>
+  <!--    source 求助来源-->
+  <div class="layui-form-item">
+    <label class="layui-form-label">求助来源</label>
+    <div class="layui-input-block">
+      <input type="text" id="source" name="source" lay-verify="required" placeholder="请输入求助来源"
+             autocomplete="off" class="layui-input" th:value="${helprequest.getSource()}" disabled>
+    </div>
+  </div>
+  <!--    description 求助详情-->
+  <div class="layui-form-item">
+    <label class="layui-form-label">求助详情</label>
+    <div class="layui-input-block">
+      <input type="text" id="description" name="description" lay-verify="required"
+             placeholder="请输入求助详情" autocomplete="off" class="layui-input"
+             th:value="${helprequest.getDescription()}" disabled>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">兽医</label>
+    <div class="layui-input-block">
+      <select type="text" id="veterinarianid" name="veterinarianid" lay-verify="required"
+              placeholder="请选择兽医" autocomplete="off" class="layui-input"
+              th:value="${helprequest.getVeterinarianid()}" disabled>
+      </select>
+    </div>
+  </div>
+  <!--    type 救助类型-->
+  <div class="layui-form-item">
+    <label class="layui-form-label">救助类型</label>
+    <div class="layui-input-block">
+      <input type="text" id="type" name="type" lay-verify="required"
+             placeholder="请输入救助类型" autocomplete="off" class="layui-input"
+             th:value="${helprequest.getType()}" disabled>
+    </div>
+  </div>
+<!--  injury 动物伤情-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">动物伤情</label>
+        <div class="layui-input-block">
+        <input type="text" id="injury" name="injury" lay-verify="required"
+                 placeholder="请输入动物伤情" autocomplete="off" class="layui-input"
+                 th:value="${animal.getInjury()}">
+        </div>
+    </div>
+<!--  treatementplan 救治方案-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">救治方案</label>
+        <div class="layui-input-block">
+        <input type="text" id="treatementplan" name="treatementplan" lay-verify="required"
+                 placeholder="请输入救治方案" autocomplete="off" class="layui-input"
+                 th:value="${animal.getTreatmentplan()}">
+        </div>
+    </div>
+  </div>
+</form>
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+  layui.use(['form', 'layedit', 'laydate'], function () {
+    var $ = layui.jquery;
+    $.ajax({
+      url: '/veterinarian/showall',//json文件位置
+      type: 'get', //请求方式为get
+      dataType: 'json', //返回数据格式为json
+      success: function (result) { //请求成功完成后要执行的方法
+        var select = $("#veterinarianid");//TypeID为HTML标签ID
+        $.each(result, function (index, item) {
+          select.append(new Option( item.name, item.id));// 下拉菜单里添加元素
+        });
+        layui.form.render("select");
+      }
+    });
+  });
+</script>
+<script>
+  var callbackdata = function () {
+    var data = {
+      name: layui.$("#name").val(),
+      phone: layui.$("#phone").val(),
+      animal: layui.$("#animal").val(),
+      location: layui.$("#location").val(),
+      time: layui.$("#time").val(),
+      source: layui.$("#source").val(),
+      description: layui.$("#description").val(),
+      record_name: layui.$("#recordname").val(),
+      record_time: layui.$("#recordtime").val(),
+      veterinarianid: layui.$("#veterinarianid").val(),
+      type: layui.$("#type").val(),
+      injury: layui.$("#injury").val(),
+        treatementplan: layui.$("#treatementplan").val()
+    };
+    return data;
+  }
+</script>
+</body>
+</html>

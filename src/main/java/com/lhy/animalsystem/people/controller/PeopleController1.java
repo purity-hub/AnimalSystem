@@ -31,4 +31,9 @@ public class PeopleController1 {
         return "dict/peopleinfoId";
     }
 
+    @RequestMapping("/authorization")
+    public String Authorization(){
+        return "dict/peopledrawer";
+    }
+
 }

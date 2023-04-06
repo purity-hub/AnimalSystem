@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
+
 @Repository
 public class User {
 
@@ -13,6 +15,7 @@ public class User {
   private String password;
   private String sex;
   private String idnumber;
+
   @DateTimeFormat(pattern = "yy-mm-dd")
   private java.sql.Date birth;
   private String politicalface;
@@ -29,6 +32,32 @@ public class User {
   private String email;
   private String attribute;
   private String degee;
+
+  public User() {
+  }
+
+  public User(int id, String name, String username, String password, String sex, String idnumber, Date birth, String politicalface, String office, String jobtitle, long worknumber, String profession, String departname, Date worktime, String post, String officephone, String residentialphone, String email, String attribute, String degee) {
+    this.id = id;
+    this.name = name;
+    this.username = username;
+    this.password = password;
+    this.sex = sex;
+    this.idnumber = idnumber;
+    this.birth = birth;
+    this.politicalface = politicalface;
+    this.office = office;
+    this.jobtitle = jobtitle;
+    this.worknumber = worknumber;
+    this.profession = profession;
+    this.departname = departname;
+    this.worktime = worktime;
+    this.post = post;
+    this.officephone = officephone;
+    this.residentialphone = residentialphone;
+    this.email = email;
+    this.attribute = attribute;
+    this.degee = degee;
+  }
 
   public int getId() {
     return id;

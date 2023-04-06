@@ -11,4 +11,7 @@
     <select id="selectUserPass" resultType="int">
         select ifnull(count(*),0) from users where username=#{username} and password =#{password}
     </select>
+    <select id="selectIdByName" resultType="java.lang.Integer">
+        select id from users where username=#{username}
+    </select>
 </mapper>

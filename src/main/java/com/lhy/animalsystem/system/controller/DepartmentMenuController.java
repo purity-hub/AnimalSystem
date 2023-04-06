@@ -3,7 +3,6 @@ package com.lhy.animalsystem.system.controller;
 import com.lhy.animalsystem.system.entity.Menu;
 import com.lhy.animalsystem.system.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,9 +19,9 @@ public class DepartmentMenuController {
     @RequestMapping("/departmentMenu")
     public Map<String,Object> departmentMenu(){
         //获取所有菜单树状展示
-        List<Menu> menu = menuService.selectAll();
+        //List<Menu> menu = menuService.selectAll();
         List<Menu> menus1 = menuService.selectByPid(0);//一级菜单
-        List<Menu> menus2 = menuService.selectByPid(1);//二级菜单
+        //List<Menu> menus2 = menuService.selectByPid(1);//二级菜单
         ArrayList<Object> list = new ArrayList<>();//存放data
         for(Menu m1:menus1){
             HashMap<String, Object> map = new HashMap<>();
@@ -97,18 +96,8 @@ public class DepartmentMenuController {
         String department = menuService.selectDepartmentByUsername(username);//获取部门,设置权限
         int departname = menuService.selectIdByDepartname(department);
         List<Integer> list1 = menuService.selectMenuByDepartment(departname);
-        Set<Menu> menus1 = new TreeSet<Menu>(new Comparator<Menu>() {
-            @Override
-            public int compare(Menu o1, Menu o2) {
-                return o1.getParentid()-o2.getParentid()==0?o1.getOrder()-o2.getOrder(): (int) (o1.getParentid() - o2.getParentid());
-            }
-        });//存储子节点
-        Set<Menu> menus2 = new TreeSet<Menu>(new Comparator<Menu>() {
-            @Override
-            public int compare(Menu o1, Menu o2) {
-                return o1.getPid()-o2.getPid()==0?o1.getOrder()-o2.getOrder(): (int) (o1.getPid() - o2.getPid());
-            }
-        });//存储父节点
+        Set<Menu> menus1 = new TreeSet<>((o1, o2) -> o1.getParentid() - o2.getParentid() == 0 ? o1.getOrder() - o2.getOrder() : (int) (o1.getParentid() - o2.getParentid()));//存储子节点
+        Set<Menu> menus2 = new TreeSet<>((o1, o2) -> o1.getPid() - o2.getPid() == 0 ? o1.getOrder() - o2.getOrder() : (int) (o1.getPid() - o2.getPid()));//存储父节点
         for(int id:list1){
             //根据id查询菜单
             Menu menu = menuService.selectMenu(id);

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhy.animalsystem.free.mapper.FreeMapper">
+    <insert id="addIt">
+        insert into animal(name,type,time,people,state) values(#{name},#{type},#{time},#{people},'放生');
+    </insert>
+    <update id="upload">
+        update animal set image=#{path} where id=#{id};
+    </update>
+    <update id="editIt">
+        update animal set name = #{name},type = #{type},time = #{time},people = #{people} where id = #{id};
+    </update>
+    <delete id="del">
+        delete from animal where id=#{id};
+    </delete>
+
+    <select id="showAll" resultType="com.lhy.animalsystem.animal.entity.Animal">
+        select * from animal where state='放生';
+    </select>
+    <select id="showAllByPage" resultType="com.lhy.animalsystem.animal.entity.Animal">
+        select * from animal where state='放生' limit #{page},#{limit};
+    </select>
+    <select id="selectById" resultType="com.lhy.animalsystem.animal.entity.Animal">
+        select * from animal where id=#{id};
+    </select>
+    <select id="search" resultType="com.lhy.animalsystem.animal.entity.Animal">
+        select * from animal where name like concat('%',#{name},'%') and state='放生';
+    </select>
+</mapper>

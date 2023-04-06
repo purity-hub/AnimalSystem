@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>动物收容救助管理系统-基本资料</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="commons/header::header"></div>
+    <div th:replace="commons/side::side"></div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input type="text" name="username" id="username" required lay-verify="required" placeholder="请输入用户名"
+                       autocomplete="off" class="layui-input" th:value="${user.getUsername()}">
+            </div>
+            <label class="layui-form-label">真实姓名</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" id="name" required lay-verify="required" placeholder="请输入姓名"
+                       autocomplete="off" class="layui-input" th:value="${user.getName()}">
+            </div>
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input type="password" name="password" id="password" required lay-verify="required" placeholder="请输入密码"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label">确认密码</label>
+            <div class="layui-input-block">
+                <input type="password" name="password1" id="password1" required lay-verify="required" placeholder="请输入密码"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <button class="layui-btn" lay-submit lay-filter="formDemo">确认修改</button>
+            <button type="reset" class="layui-btn layui-btn-primary" onclick="resetinfo()">重置</button>
+        </div>
+    </div>
+    <div th:replace="commons/fotter::fotter"></div>
+    <script th:src="@{/layui/layui.js}"></script>
+    <script>
+        layui.use('form', function () {
+            var form = layui.form;
+            //监听提交
+            form.on('submit(formDemo)', function (data) {
+                var $ = layui.jquery;
+                var username = document.getElementById("username").value;
+                var name = document.getElementById("name").value;
+                var password = document.getElementById("password").value;
+                var password1 = document.getElementById("password1").value;
+                if (password !== password1) {
+                    layer.msg("两次密码不一致");
+                    return false;
+                }else if(password.length<6){
+                    layer.msg("密码长度不能小于6位");
+                    return false;
+                } else if(password.length>16){
+                    layer.msg("密码长度不能大于16位");
+                    return false;
+                } else if(username===""||name===""||password===""||password1===""){
+                    layer.msg("请填写完整信息");
+                    return false;
+                }
+                else{
+                    $.ajax({
+                        url: "/header/editInfo",
+                        type: "post",
+                        data: {
+                            "username": username,
+                            "name": name,
+                            "password": password
+                        },
+                        success: function (data) {
+                            if (data === "success") {
+                                layer.msg("修改成功");
+                            } else {
+                                layer.msg("用户名重复");
+                            }
+                        }
+                    });
+                    layer.msg(JSON.stringify(data.field));
+                }
+                return false;
+            });
+        });
+        function resetinfo() {
+            document.getElementById("username").value = "";
+            document.getElementById("name").value = "";
+            document.getElementById("password").value = "";
+            document.getElementById("password1").value = "";
+        }
+    </script>
+</div>
+</body>
+</html>

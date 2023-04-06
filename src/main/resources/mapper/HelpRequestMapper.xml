@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhy.animalsystem.helprequest.mapper.HelpRequestMapper">
+    <insert id="addIt">
+        insert into helprequest (name, phone, animal, location, time, source, description, recordname, recordtime)
+        values (#{name}, #{phone}, #{animal}, #{location}, #{time}, #{source}, #{description}, #{recordname}, #{recordtime})
+    </insert>
+    <update id="editIt">
+        update helprequest set name=#{name}, phone=#{phone}, animal=#{animal}, location=#{location}, time=#{time}, source=#{source}, description=#{description}, recordname=#{recordname}, recordtime=#{recordtime} where id=#{id}
+    </update>
+    <update id="editInfo">
+        update helprequest set animalid=#{i}, type=#{type}, veterinarianid=#{veterinarianid},assignpeopleid=#{assignpeopleid},assigntime=#{assigntime},state=1 where id=#{id}
+    </update>
+    <update id="editInfo2">
+        update helprequest set type=#{type}, veterinarianid=#{veterinarianid},state=1 where id=#{id}
+    </update>
+    <update id="updatetreatment">
+        update animal set injury=#{injury},treatmentplan=#{treatmentplan} where id=#{id}
+    </update>
+    <update id="updatestate">
+        update helprequest set state=#{state} where id=#{id}
+    </update>
+    <delete id="deleteById">
+        delete from helprequest where id=#{id}
+    </delete>
+
+    <select id="showAllByPage" resultType="com.lhy.animalsystem.helprequest.entity.Helprequest">
+        select * from helprequest where state=0 limit #{page},#{limit}
+    </select>
+    <select id="showAll" resultType="com.lhy.animalsystem.helprequest.entity.Helprequest">
+        select * from helprequest where state=0
+    </select>
+    <select id="selectById" resultType="com.lhy.animalsystem.helprequest.entity.Helprequest">
+        select * from helprequest where id=#{id}
+    </select>
+    <select id="selectByName" resultType="com.lhy.animalsystem.helprequest.entity.Helprequest">
+        select * from helprequest where name like #{name} and state=0
+    </select>
+    <select id="showAll2" resultType="com.lhy.animalsystem.helprequest.entity.Helprequest">
+        select * from helprequest where state=1
+    </select>
+    <select id="showAllByPage2" resultType="com.lhy.animalsystem.helprequest.entity.Helprequest">
+        select * from helprequest where state=1 limit #{page},#{limit}
+    </select>
+    <select id="selectByName2" resultType="com.lhy.animalsystem.helprequest.entity.Helprequest">
+        select * from helprequest where name like #{name} and state=1
+    </select>
+    <select id="showAll3" resultType="com.lhy.animalsystem.helprequest.entity.Helprequest">
+        select * from helprequest where state=2
+    </select>
+    <select id="showAllByPage3" resultType="com.lhy.animalsystem.helprequest.entity.Helprequest">
+        select * from helprequest where state=2 limit #{page},#{limit}
+    </select>
+    <select id="selectByName3" resultType="com.lhy.animalsystem.helprequest.entity.Helprequest">
+        select * from helprequest where name like #{name} and state=2
+    </select>
+</mapper>

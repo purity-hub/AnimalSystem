@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhy.animalsystem.animal.mapper.AnimalMapper">
+
+<!--    插入语句返回自增id-->
+    <insert id="addAnimal"  parameterType="com.lhy.animalsystem.animal.entity.Animal">
+        insert into animal(name) value (#{test.name})
+        <selectKey keyProperty="test.id" order="AFTER" resultType="int">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <update id="updatestate">
+        update animal set state = #{state} where id = #{animalid}
+    </update>
+    <select id="getMaxId" resultType="java.lang.Integer">
+        select max(id) from animal
+    </select>
+    <select id="selectById" resultType="com.lhy.animalsystem.animal.entity.Animal">
+        select * from animal where id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>动物收容救助管理系统-数据关联</title>
+  <link th:href="@{/layui/css/layui.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+  <div th:replace="commons/header::header"></div>
+  <div th:replace="commons/side::side"></div>
+  <div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div style="padding: 15px;">
+      <table id="demo" lay-filter="test" class="right"></table>
+      <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">处理</a>
+      </script>
+    </div>
+  </div>
+  <div th:replace="commons/fotter::fotter"></div>
+  <script th:src="@{/layui/layui.js}"></script>
+  <script th:inline=none>
+    layui.use('table', function(){
+      var table = layui.table;
+      table.render({
+        elem: '#demo'
+        ,height: 500
+        ,url: '/help/request/showall2' //数据接口
+        ,page: true //开启分页
+        ,cols: [[
+          {type: 'checkbox', fixed: 'left'}
+          ,{field: 'id', title: '请求id', sort: true,width:100}
+          ,{field: 'time', title: '请求时间', sort: true}
+          ,{field: 'name', title: '求助人姓名', sort: true}
+          ,{field: 'phone', title: '求助人电话', sort: true}
+          ,{field: 'animal', title: '求助动物', sort: true}
+          ,{field: 'location', title: '求助地址', sort: true}
+          ,{field: 'source', title: '求助来源', sort: true}
+          ,{field: 'description', title: '请输入求助详情', sort: true}
+          ,{fixed: 'right', align:'left', toolbar: '#barDemo'} 	//添加工具条
+        ]]
+      });
+    });
+    layui.use('table', function(){
+      var table = layui.table;
+      var form = layui.form;
+      //使用内置jquery
+      var $ = layui.jquery;
+      //监听行工具事件
+      table.on('tool(test)', function(obj){
+        var data = obj.data;
+        console.log(data);
+        if(obj.event === 'authorization'){
+          //增加字典值
+          layer.open({
+            //tyoe为2时开启外部url内容
+            type: 2,
+            // r表示right,b表示bottom
+            offset: 'rb',
+            title: '字典值',
+            // anim 特效 0-平滑放大 1-从上掉落 2-从底部往上滑入 3-从左滑入 4-从左翻转 5-渐显 6-抖动
+            anim: 1,
+            // 第一个参数宽度，第二个参数高度
+            area: ['558px', '100%'],
+            // 内容区 在body中写入<div id="draw">。。。。</div>代码，即弹窗内容
+            content: '/dictionary/dictvalue/'+data.id,
+          })
+        } else if(obj.event === 'del'){
+          layer.confirm('确认要删除吗?', function(index){
+            layui.$.post('/help/request/del',{id:data.id},function (res){
+              if(res!==0){
+                obj.del();
+                layer.close(index);
+              }else{
+                layer.msg("删除失败");
+              }
+            });
+          });
+        } else if(obj.event === 'edit'){
+          var $ = layui.$;
+          layer.open({
+            type: 2
+            ,title: '处理'
+            ,content: '/treatment/info/edit/'+data.id
+            ,maxmin: true
+            ,area: ['500px', '500px']
+            ,btn: ['确定', '取消']
+            ,yes: function(index, layero){
+              var res  = layero.find('iframe')[0].contentWindow.callbackdata();
+              console.log(res)
+              //提交 Ajax 成功后，静态更新表格中的数据
+              $.post('/treatment/info/editIt/',{
+                id:data.id,
+                animalid:data.animalid,
+                // veterinarianid:res.veterinarianid,
+                // type:res.type,
+                injury:res.injury,
+                treatmentplan:res.treatementplan,
+              },function (res1){
+                table.reload('demo'); //数据刷新
+                layer.close(index); //关闭弹层
+              });
+            }
+          });
+        }
+      });
+    });
+  </script>
+  <script>
+    // 批量删除
+    function delAll() {
+      var table = layui.table;
+      var checkStatus = table.checkStatus('demo')
+      data = checkStatus.data;//获取选中的数据
+      //console.log(data)
+      //将data获取到departmentId加入到数组中
+      let ids=[];
+      for(var i=0;i<data.length;i++){
+        ids.push(data[i].id);
+      }
+      layer.confirm('真的删除该行吗?', function(index){
+        //向服务端发送删除指令
+        //用ajax来连通后端数据--或者用$.post(url,{},function(){})
+        layui.$.ajax({
+          url:'/help/request/delAll',
+          type:'post',
+          data:{
+            ids:JSON.stringify(ids)
+          },
+          success:function (data) {
+            if (data==="success"){
+              //停留一秒
+              layer.msg(data,{icon:1,time:1000},function () {
+                table.reload('demo');
+              });
+            }else {
+              layer.msg(data,{icon:2,time:1000});
+            }
+          }
+        });
+      });
+    }
+    //layui文档竟然没有按钮的click属性,只能通过jquery来绑定了
+    layui.$('#delAll').on('click', function(){
+      delAll();
+    });
+    function search() {
+      var name = layui.$('#name').val();
+      var table = layui.table
+      layui.$.post('/help/request/search',{name:name},function (res){
+        //console.log(res)
+        table.reload('demo', {
+          page: {
+            curr: 1 //重新从第 1 页开始
+          }
+          ,where: {
+            name:  name		//在表格中进行搜索
+          }
+        });
+      })
+    }
+    layui.$('#search').on('click',function () {
+      search();
+    });
+    function addIt(){
+      layer.open({
+        type: 2
+        ,title: '增加'
+        ,content: '/help/request/edit'
+        ,maxmin: true
+        ,area: ['500px', '500px']
+        ,btn: ['确定', '取消']
+        ,yes: function(index, layero){
+          var res  = layero.find('iframe')[0].contentWindow.callbackdata();
+          //提交 Ajax 成功后，静态更新表格中的数据
+          layui.$.post('/help/request/addIt',{
+            name:res.name,
+            phone:res.phone,
+            animal:res.animal,
+            location:res.location,
+            time:res.time,
+            source:res.source,
+            description:res.description,
+            recordname:res.recordname,
+            recordtime:res.recordtime,
+          },function (res1){
+            layui.table.reload('demo'); //数据刷新
+            layer.close(index); //关闭弹层
+          });
+        }
+      });
+    }
+    layui.$('#addIt').on('click',function () {
+      addIt();
+    });
+  </script>
+</div>
+</body>
+</html>

@@ -13,4 +13,6 @@ public interface LoginMapper {
     List<User> selectAllUser();
     //用户名和密码查询
     int selectUserPass(@Param("username") String username,@Param("password") String password);
+
+    int selectIdByName(String username);
 }

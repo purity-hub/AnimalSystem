@@ -23,7 +23,7 @@ public interface PeopleMapper {
 
     int AddIt(@Param("name")String name,@Param("username")String username,  @Param("password")String password, @Param("sex")String sex, @Param("Idnumber") String Idnumber,@Param("birth") Date birth,@Param("politicalface") String politicalface,@Param("office") String office,@Param("jobtitle") String jobtitle,@Param("worknumber")int worknumber,@Param("profession")String profession,@Param("departname") String departname,@Param("worktime") Date worktime,@Param("post") String post,@Param("officephone") String officephone,@Param("residentialphone") String residentialphone,@Param("email") String email,@Param("attribute") String attribute,@Param("degee") String degee);
 
-    User selectByName(@Param("name")String name);
+    List<User> selectByName(@Param("name")String name);
 
     List<User> selectByDepartname(@Param("departname")String departname);
 }

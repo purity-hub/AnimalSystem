@@ -133,11 +133,11 @@ public class PeopleController {
 
     @RequestMapping(value = "/search")
     public Map<String,Object> search(@RequestParam("name") String name){
-        User user = peopleService.selectByName(name);
+        List<User> user = peopleService.selectByName(name);
         HashMap<String, Object> map = new HashMap<>();
         map.put("code",0);
         map.put("msg","人员信息");
-        map.put("count",1);
+        map.put("count",user.size());
         map.put("data",user);
         //前端实际调用的是showAll方法,这里留作后续开发备用
         return map;
@@ -153,4 +153,5 @@ public class PeopleController {
         //前端实际调用的是showAll方法,这里留作后续开发备用
         return map;
     }
+
 }

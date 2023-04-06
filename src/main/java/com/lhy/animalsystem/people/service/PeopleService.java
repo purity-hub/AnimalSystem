@@ -20,7 +20,7 @@ public interface PeopleService {
 
     int AddIt(String name,String username, String password, String sex, String Idnumber, Date birth, String politicalface, String office, String jobtitle, int worknumber, String profession, String departname, Date worktime, String post, String officephone, String residentialphone, String email, String attribute, String degee);
 
-    User selectByName(String name);
+    List<User> selectByName(String name);
 
     List<User> selectByDepartname(String departname);
 }

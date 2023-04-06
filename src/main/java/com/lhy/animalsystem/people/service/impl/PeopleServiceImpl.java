@@ -46,8 +46,8 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public User selectByName(String name) {
-        return peopleMapper.selectByName(name);
+    public List<User> selectByName(String name) {
+        return peopleMapper.selectByName('%'+name+'%');
     }
 
     @Override

@@ -34,7 +34,7 @@
         insert into users(name, username, password, sex, Idnumber, birth, politicalface, office, jobtitle,worknumber, profession, departname, worktime, post, officephone, residentialphone, email, attribute, degee) values(#{name},#{username},#{password},#{sex},#{Idnumber},#{birth},#{politicalface},#{office},#{jobtitle},#{worknumber},#{profession},#{departname},#{worktime},#{post},#{officephone},#{residentialphone},#{email},#{attribute},#{degee});
     </insert>
     <select id="selectByName" resultType="com.lhy.animalsystem.login.entity.User">
-        select * from users where name=#{name}
+        select * from users where name like #{name}
     </select>
     <select id="selectByDepartname" resultType="com.lhy.animalsystem.login.entity.User">
         select * from users where departname=#{departname}

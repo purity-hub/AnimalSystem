@@ -8,4 +8,6 @@ public interface LoginService {
     List<User> selectAllUser();
     //用户名和密码查询
     int selectUserPass(String username,String password);
+
+    int selectIdByName(String username);
 }

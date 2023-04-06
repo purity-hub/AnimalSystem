@@ -23,4 +23,9 @@ public class LoginServiceImpl implements LoginService {
     public int selectUserPass(String username, String password) {
         return loginMapper.selectUserPass(username,password);
     }
+
+    @Override
+    public int selectIdByName(String username) {
+        return loginMapper.selectIdByName(username);
+    }
 }

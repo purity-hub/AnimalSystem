@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lhy.animalsystem.dictionary.mapper.DictionaryValueMapper">
+    <insert id="insertDictValue">
+        insert into sys_dict_value (name, value, code, info,parentid) values (#{name}, #{value}, #{code}, #{info},#{parentid})
+    </insert>
+    <update id="updateDictValue">
+        update sys_dict_value set name = #{name}, value = #{value}, code = #{code}, info = #{info} where id = #{id}
+    </update>
+    <delete id="deleteDictValue">
+        delete from sys_dict_value where id = #{id}
+    </delete>
+
+    <select id="selectDictById" resultType="com.lhy.animalsystem.dictionary.entity.SysDictValue">
+        select * from sys_dict_value where id = #{id}
+    </select>
+</mapper>

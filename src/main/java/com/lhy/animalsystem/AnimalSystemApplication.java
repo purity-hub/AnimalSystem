@@ -1,14 +1,10 @@
 package com.lhy.animalsystem;
 
-import org.mybatis.spring.annotation.MapperScan;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 
-import javax.annotation.ManagedBean;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 

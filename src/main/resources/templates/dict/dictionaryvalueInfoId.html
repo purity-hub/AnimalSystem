@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>动物收容救助管理系统-人员信息</title>
+  <link th:href="@{/layui/css/layui.css}" rel="stylesheet" />
+</head>
+<body>
+<form class="layui-form" action="">
+  <div class="layui-form-item">
+    <label class="layui-form-label">名称</label>
+    <div class="layui-input-block">
+      <input type="text" id="name" name="name" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input" th:value="${dict.getName()}">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">值</label>
+    <div class="layui-input-block">
+      <input type="text" id="value" name="value" required  lay-verify="required" placeholder="请输入值" autocomplete="off" class="layui-input" th:value="${dict.getValue()}">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">代码</label>
+    <div class="layui-input-block">
+      <input type="text" id="code" name="code" required  lay-verify="required" placeholder="请输入代码" autocomplete="off" class="layui-input" th:value="${dict.getCode()}">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">信息</label>
+    <div class="layui-input-block">
+      <input type="text" id="info" name="info" required  lay-verify="required" placeholder="请输入信息" autocomplete="off" class="layui-input" th:value="${dict.getInfo()}">
+    </div>
+  </div>
+</form>
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+  var callbackdata = function () {
+    var data = {
+        name: document.getElementById("name").value,
+        value: document.getElementById("value").value,
+        code: document.getElementById("code").value,
+        info: document.getElementById("info").value
+    };
+    return data;
+  }
+</script>
+</body>
+</html>

@@ -13,6 +13,18 @@ public class SysLog {
   private String ip;
   private java.sql.Date createdDate;
 
+  public SysLog() {
+  }
+
+  public SysLog(long id, String username, String operation, String method, String params, String ip, Date createdDate) {
+    this.id = id;
+    this.username = username;
+    this.operation = operation;
+    this.method = method;
+    this.params = params;
+    this.ip = ip;
+    this.createdDate = createdDate;
+  }
 
   public long getId() {
     return id;

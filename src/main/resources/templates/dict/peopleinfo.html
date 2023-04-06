@@ -37,14 +37,21 @@
         </div>
         <!-- 操作按钮 -->
         <script type="text/html" id="barDemo">
-            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="authorization">授权</a>
             <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
             <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
         </script>
+        <div id="draw"></div><!--抽屉留作备用,可有可无-->
     </div>
     <div th:replace="commons/fotter::fotter"></div>
     <script th:src="@{/layui/layui.js}"></script>
     <script>
+        // layui.config({
+        //     base: '../../static/layui/', //拓展模块的根目录
+        // })
+        //     .extend({
+        //         drawer: '../../static/layui/drawer/drawer'
+        //     });
         layui.use('tree', function(){
             var tree = layui.tree;
             //获取后端数据department
@@ -168,8 +175,21 @@
             //监听行工具事件
             table.on('tool(test)', function(obj){
                 var data = obj.data;
-                if(obj.event === 'detail'){
-
+                if(obj.event === 'authorization'){
+                    //授权
+                    layer.open({
+                        //tyoe为2时开启外部url内容
+                        type: 2,
+                        // r表示right,b表示bottom
+                        offset: 'rb',
+                        title: '授权',
+                        // anim 特效 0-平滑放大 1-从上掉落 2-从底部往上滑入 3-从左滑入 4-从左翻转 5-渐显 6-抖动
+                        anim: 1,
+                        // 第一个参数宽度，第二个参数高度
+                        area: ['558px', '100%'],
+                        // 内容区 在body中写入<div id="draw">。。。。</div>代码，即弹窗内容
+                        content: '/people/authorization',
+                    })
                 } else if(obj.event === 'del'){
                     layer.confirm('确认要删除吗?', function(index){
                         layui.$.post('/people/del',{username:data.username},function (res){
@@ -265,12 +285,6 @@
         function search() {
             var name = layui.$('#name').val();
             var table = layui.table
-            // 下面可以实现搜索功能,但是不是全部数据的搜索,弃用
-            // table.reload('demo',{
-            //     where:{
-            //         name:name
-            //     }
-            // });
             layui.$.post('/people/search',{name:name},function (res){
                 //console.log(res)
                 table.reload('demo', {
@@ -297,7 +311,27 @@
                 ,yes: function(index, layero){
                     var res  = layero.find('iframe')[0].contentWindow.callbackdata();
                     //提交 Ajax 成功后，静态更新表格中的数据
-                    layui.$.post('/people/addIt',{departmentId:res.departmentId,header:res.people,introduction:res.introduction,order:res.order,phone:res.phone,deptname:res.deptname},function (res1){
+                    layui.$.post('/people/addIt',{
+                        name:res.name,
+                        username:res.username,
+                        password:res.password,
+                        sex:res.sex,
+                        Idnumber:res.Idnumber,
+                        birth:res.birth,
+                        politicalface:res.politicalface,
+                        office:res.office,
+                        jobtitle:res.jobtitle,
+                        worknumber:res.worknumber,
+                        profession:res.profession,
+                        departname:res.departname,
+                        worktime:res.worktime,
+                        post:res.post,
+                        officephone:res.officephone,
+                        residentialphone:res.residentialphone,
+                        email:res.email,
+                        attribute:res.attribute,
+                        degee:res.degee
+                    },function (res1){
                         layui.table.reload('demo'); //数据刷新
                         layer.close(index); //关闭弹层
                     });

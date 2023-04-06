@@ -30,4 +30,9 @@ public class IndexController {
     public String Syslog(){
         return "dict/syslog";
     }
+
+    @RequestMapping("/dict/dictionary")
+    public String Dictionary(){
+        return "dict/dictionary";
+    }
 }

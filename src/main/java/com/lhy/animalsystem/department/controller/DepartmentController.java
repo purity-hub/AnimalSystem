@@ -1,20 +1,13 @@
 package com.lhy.animalsystem.department.controller;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.lhy.animalsystem.department.entity.Department;
 import com.lhy.animalsystem.department.service.DepartmentService;
 import com.lhy.animalsystem.system.annotation.MyLog;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -39,16 +32,17 @@ public class DepartmentController {
             HashMap<String, Object> map = new HashMap<>();
             map.put("id",d.getDepartmentId());
             map.put("title",d.getDeptname());
+            map.put("icon","layui-icon layui-icon-group");
             list1.add(map);
         }
         List<Map<String,Object>> list = new ArrayList<>();
-        Map map = new HashMap<String,Object>();
+        Map<String, Object> map = new HashMap<String,Object>();
         //加入父级树
         map.put("title","动物园");
         map.put("spread",true);//展开
         map.put("children",list1);
         list.add(map);
-        Map Resultmap = new HashMap<String,Object>();
+        Map<String, Object> Resultmap = new HashMap<String,Object>();
         Resultmap.put("code",0);
         Resultmap.put("msg","");
         Resultmap.put("count",list.size());
